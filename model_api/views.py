@@ -1,9 +1,6 @@
 from django.http import JsonResponse
 from django.views import View
-from PIL import Image
-from torchvision import transforms
-import torch
-import io
+
 
 from ultralytics import YOLO
 
