@@ -30,15 +30,5 @@ class PredictView(View):
     
     def get(self, request, *args, **kwargs):
         return JsonResponse({'message': 'This is a GET request'})
-#i wanna test if it is working
-# Load a sample image
-image = Image.open('D:/Users/halide/data/datasets/coco8/images/test/image_524.jpg')
-# test the model
-results = model.predict(image, conf=0.40, classes=0, augment=True, show=True)
 
-boxes = results[0].boxes
-if boxes:
-    print('Object detected')
-else:
-    print('No object detected')
 
