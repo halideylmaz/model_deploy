@@ -34,7 +34,7 @@ class PredictView(View):
 # Load a sample image
 image = Image.open('D:/Users/halide/data/datasets/coco8/images/test/image_524.jpg')
 # test the model
-results = model.predict(image, conf=0.40, classes=0, augment=True)
+results = model.predict(image, conf=0.40, classes=0, augment=True, show=True)
 
 boxes = results[0].boxes
 if boxes:
