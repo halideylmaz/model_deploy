@@ -3,14 +3,15 @@ databases:
     plan: free
     databaseName: model_deploy
     user: model_deploy
-
+    
 services:
   - type: web
     plan: free
     name: model_deploy
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "python -m gunicorn mysite.asgi:application -k uvicorn.workers.UvicornWorker"    envVars:
+    startCommand: "python -m gunicorn mysite.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: model_deploy
@@ -18,4 +19,4 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY
-        value: 4
+        value: "4"
