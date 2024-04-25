@@ -10,7 +10,7 @@ services:
     name: model_deploy
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "python -m gunicorn model_deploy.asgi:application -k uvicorn.workers.UvicornWorker --worker-class gevent"
+    startCommand: "gunicorn model_deploy.asgi:application -k uvicorn.workers.UvicornWorker --timeout 0"
     envVars:
       - key: DATABASE_URL
         fromDatabase:

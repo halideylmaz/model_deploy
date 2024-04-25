@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-s4q52=neqia95pn3by@t37j$mo%3+xb#_9o_-&5d*-xyhhhpw-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'model_deploy.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://model_deploy:VyJbYOhqlUXpw6f4jPxH1nqCQOksZePC@dpg-coklasen7f5s738t92eg-a/model_deploy',
+        default='postgres://postgres:2912@localhost:5432/postgres',
         conn_max_age=600
     )
 }
