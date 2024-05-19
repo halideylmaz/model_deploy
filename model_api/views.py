@@ -9,14 +9,9 @@ from PIL import Image
 from io import BytesIO
 import os
 
-# Define paths to your models
-main_dir = os.path.dirname(os.path.realpath(__file__))
-modelcigarette_path = os.path.join(main_dir, "best.pt")
-modelgun_path = os.path.join(main_dir, "gun_model.pt")
-
 # Load your models
-modelcigarette = YOLO(modelcigarette_path)
-modelgun = YOLO(modelgun_path)
+modelcigarette = YOLO("./best.pt")
+modelgun = YOLO("./gun_model.pt")
 
 def process_image(image):
     try:
