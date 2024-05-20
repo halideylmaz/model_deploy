@@ -26,10 +26,9 @@ SECRET_KEY = 'django-insecure-s4q52=neqia95pn3by@t37j$mo%3+xb#_9o_-&5d*-xyhhhpw-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+#ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['model-deploy-4r13.onrender.com']
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "model_api.apps.ModelApiConfig",
+    "model_api",
 ]
-
+#'whitenoise.middleware.WhiteNoiseMiddleware',
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -57,7 +56,7 @@ ROOT_URLCONF = 'model_deploy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,12 +75,22 @@ WSGI_APPLICATION = 'model_deploy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': dj_database_url.config(
         default='postgres://model_deploy:VyJbYOhqlUXpw6f4jPxH1nqCQOksZePC@dpg-coklasen7f5s738t92eg-a/model_deploy',
         conn_max_age=600
     )
 }
+
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+"""
 
 
 # Password validation

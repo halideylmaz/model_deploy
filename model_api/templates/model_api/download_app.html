@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download App</title>
+</head>
+<body>
+    <h1>Download App</h1>
+    <p>Click the button below to download the app:</p>
+    <a href="{% url 'download_apk' %}" download>
+        <button>Download</button>
+    </a>
+
+    <a href="{% url 'index' %}">
+        <button>Return to Home</button>
+    </a>
+</body>
+</html>

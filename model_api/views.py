@@ -1,6 +1,7 @@
 # views.py
 import json
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import FileResponse, HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
+from django.shortcuts import render
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -8,10 +9,16 @@ from ultralytics import YOLO
 from PIL import Image
 from io import BytesIO
 import os
+from django.http import FileResponse, HttpResponse
+from wsgiref.util import FileWrapper  # Import FileWrapper
+
 
 # Load your models
 modelcigarette = YOLO("./best.pt")
 modelgun = YOLO("./gun_model.pt")
+
+def index_page(request):
+    return render(request, 'model_api/index.html')
 
 def process_image(image):
     try:
@@ -45,3 +52,23 @@ class PredictView(View):
 
     def get(self, request, *args, **kwargs):
         return JsonResponse({'message': 'This is a GET request'})
+
+
+
+def open_app(request):
+    # Render a template containing JavaScript for the redirection
+    return render(request, 'model_api/open_app.html')
+
+
+def download_apk(request):
+    # Path to your APK file
+    apk_file_path = './app-debug.apk'  # Replace with actual path
+
+    try:
+        f = open(apk_file_path, 'rb')
+        wrapper = FileWrapper(f)
+        response = HttpResponse(wrapper, content_type='application/vnd.android.package-archive')
+        response['Content-Disposition'] = 'attachment; filename="app-debug.apk"'
+        return response
+    except FileNotFoundError:
+        return render(request, 'error.html', {'message': 'APK file not found'})
