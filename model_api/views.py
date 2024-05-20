@@ -11,6 +11,7 @@ from io import BytesIO
 import os
 from django.http import FileResponse, HttpResponse
 from wsgiref.util import FileWrapper  # Import FileWrapper
+from django.shortcuts import redirect
 
 
 # Load your models
@@ -60,15 +61,7 @@ def open_app(request):
     return render(request, 'model_api/open_app.html')
 
 
-def download_apk(request):
-    # Path to your APK file
-    apk_file_path = './app-debug.apk'  # Replace with actual path
 
-    try:
-        f = open(apk_file_path, 'rb')
-        wrapper = FileWrapper(f)
-        response = HttpResponse(wrapper, content_type='application/vnd.android.package-archive')
-        response['Content-Disposition'] = 'attachment; filename="app-debug.apk"'
-        return response
-    except FileNotFoundError:
-        return render(request, 'error.html', {'message': 'APK file not found'})
+def download_apk(request):
+    google_drive_link = "https://drive.google.com/file/d/1-U62DWNSnXLjk7NxQPcxNpm70d0T2AZ1/view?usp=sharing"
+    return redirect(google_drive_link)
