@@ -1,20 +1,62 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: #d8bfd8; /* Light purple */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: #b39eb5; /* Darker purple on hover */
+        }
+
+        /* Adjust button style for better appearance on smaller screens */
+        @media (max-width: 600px) {
+            .btn {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Main Page</h1>
+    <h1>PCare</h1>
     <div>
         <a href="{% url 'open_app' %}">
-            <button>Open App</button>
+            <button class="btn">Open PCare</button>
+        </a>
     </div>
     <div>
         <a href="{% url 'download_apk' %}">
-            <button>Download App</button>
+            <button class="btn">Download PCare</button>
         </a>
     </div>
 </body>
