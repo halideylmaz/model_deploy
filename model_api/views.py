@@ -1,4 +1,5 @@
 # views.py
+import asyncio
 import json
 from django.http import FileResponse, HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
@@ -55,12 +56,16 @@ class PredictView(View):
         return JsonResponse({'message': 'This is a GET request'})
 """
 
+
 async def process_image(image):
     try:
         loop = asyncio.get_event_loop()
-        result1 = await loop.run_in_executor(None, modelcigarette.predict, image, classes=0, conf=0.70, augment=True)
+        result1 = await loop.run_in_executor(None, lambda: modelcigarette.predict(image, classes=0, conf=0.70, augment=True))
         boxes_cigarette = result1[0].boxes
-        result2 = await loop.run_in_executor(None, modelgun.predict, image, classes=0, conf=0.60, augment=True)
+        if boxes_cigarette:
+            return {'cigarette': True, 'gun': False}
+        
+        result2 = await loop.run_in_executor(None, lambda: modelgun.predict(image, classes=0, conf=0.60, augment=True))
         boxes_gun = result2[0].boxes
 
         if boxes_gun and boxes_cigarette:
@@ -90,8 +95,8 @@ class PredictView(View):
 
     async def get(self, request, *args, **kwargs):
         return JsonResponse({'message': 'This is a GET request'})
-
-
+    
+    
 def open_app(request):
     # Render a template containing JavaScript for the redirection
     return render(request, 'model_api/open_app.html')
