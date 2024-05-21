@@ -20,7 +20,7 @@ modelgun = YOLO("./gun_model.pt")
 
 def index_page(request):
     return render(request, 'model_api/index.html')
-
+"""
 def process_image(image):
     try:
         result1 = modelcigarette.predict(image, classes=0, conf=0.70, augment=True)
@@ -53,7 +53,43 @@ class PredictView(View):
 
     def get(self, request, *args, **kwargs):
         return JsonResponse({'message': 'This is a GET request'})
+"""
 
+async def process_image(image):
+    try:
+        loop = asyncio.get_event_loop()
+        result1 = await loop.run_in_executor(None, modelcigarette.predict, image, classes=0, conf=0.70, augment=True)
+        boxes_cigarette = result1[0].boxes
+        result2 = await loop.run_in_executor(None, modelgun.predict, image, classes=0, conf=0.60, augment=True)
+        boxes_gun = result2[0].boxes
+
+        if boxes_gun and boxes_cigarette:
+            return {'gun': True, 'cigarette': True}
+        elif boxes_gun:
+            return {'gun': True, 'cigarette': False}
+        elif boxes_cigarette:
+            return {'gun': False, 'cigarette': True}
+        else:
+            return {'cigarette': False, 'gun': False}
+    except Exception as e:
+        return {'error': str(e)}
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PredictView(View):
+    async def post(self, request, *args, **kwargs):
+        if 'image' not in request.FILES:
+            return HttpResponseBadRequest('Image file not provided')
+
+        try:
+            image_data = request.FILES['image'].read()
+            image = Image.open(BytesIO(image_data))
+            result = await process_image(image)
+            return JsonResponse(result)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    async def get(self, request, *args, **kwargs):
+        return JsonResponse({'message': 'This is a GET request'})
 
 
 def open_app(request):
