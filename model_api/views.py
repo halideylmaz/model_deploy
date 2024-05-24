@@ -63,7 +63,7 @@ async def process_image(image):
         result1 = await loop.run_in_executor(None, lambda: modelcigarette.predict(image, classes=0, conf=0.70, augment=True))
         boxes_cigarette = result1[0].boxes
         if boxes_cigarette:
-            return {'cigarette': True, 'gun': False}
+            return {'gun': False, 'cigarette': True}
         
         result2 = await loop.run_in_executor(None, lambda: modelgun.predict(image, classes=0, conf=0.60, augment=True))
         boxes_gun = result2[0].boxes
@@ -75,7 +75,7 @@ async def process_image(image):
         elif boxes_cigarette:
             return {'gun': False, 'cigarette': True}
         else:
-            return {'cigarette': False, 'gun': False}
+            return {'gun': False, 'cigarette': False}
     except Exception as e:
         return {'error': str(e)}
 
