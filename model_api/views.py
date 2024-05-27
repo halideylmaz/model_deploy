@@ -93,5 +93,5 @@ def open_app(request):
 
 
 def download_apk(request):
-    google_drive_link = "https://drive.google.com/file/d/1lP9SaGsdcsKmlTggKfNly0nw1Cb4MGJu/view?usp=drive_link"
+    google_drive_link = "https://drive.google.com/file/d/1SG4XV3PVt35_eeV6VzGfyrSfVAbDKj9p/view?usp=drive_link"
     return redirect(google_drive_link)
