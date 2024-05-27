@@ -17,7 +17,7 @@ from django.shortcuts import redirect
 
 # Load your models
 modelcigarette = YOLO("./best.pt")
-modelgun = YOLO("./gun_model.pt")
+modelgun = YOLO("./gun_model1.pt")
 
 def index_page(request):
     return render(request, 'model_api/index.html')
@@ -65,7 +65,7 @@ async def process_image(image):
         if boxes_cigarette:
             return {'gun': False, 'cigarette': True}
         
-        result2 = await loop.run_in_executor(None, lambda: modelgun.predict(image, classes=0, conf=0.60, augment=True))
+        result2 = await loop.run_in_executor(None, lambda: modelgun.predict(image, classes=0, conf=0.70, augment=True))
         boxes_gun = result2[0].boxes
 
         if boxes_gun and boxes_cigarette:
