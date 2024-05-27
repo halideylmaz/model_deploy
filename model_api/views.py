@@ -13,11 +13,16 @@ import os
 from django.http import FileResponse, HttpResponse
 from wsgiref.util import FileWrapper  # Import FileWrapper
 from django.shortcuts import redirect
+from inference_sdk import InferenceHTTPClient
 
+CLIENT = InferenceHTTPClient(
+    api_url="https://detect.roboflow.com",
+    api_key="vc9ROaK2bp5PzXjpdGBP"
+)
 
 # Load your models
 modelcigarette = YOLO("./best.pt")
-modelgun = YOLO("./gun_model1.pt")
+#modelgun = YOLO("./gun_model1.pt")
 
 def index_page(request):
     return render(request, 'model_api/index.html')
@@ -65,17 +70,14 @@ async def process_image(image):
         if boxes_cigarette:
             return {'gun': False, 'cigarette': True}
         
-        result2 = await loop.run_in_executor(None, lambda: modelgun.predict(image, classes=0, conf=0.70, augment=True))
-        boxes_gun = result2[0].boxes
+        result2 = await loop.run_in_executor(None, lambda: CLIENT.infer(image, model_id="gun-detection-using-yolo-i/1"))
+        if(result2['predictions'] != [] ):
+            for i in result2['predictions']:
+                if i['confidence'] > 0.50:
+                    return {'gun': True, 'cigarette': False}
 
-        if boxes_gun and boxes_cigarette:
-            return {'gun': True, 'cigarette': True}
-        elif boxes_gun:
-            return {'gun': True, 'cigarette': False}
-        elif boxes_cigarette:
-            return {'gun': False, 'cigarette': True}
-        else:
-            return {'gun': False, 'cigarette': False}
+       
+        return {'gun': False, 'cigarette': False}
     except Exception as e:
         return {'error': str(e)}
 
@@ -104,5 +106,5 @@ def open_app(request):
 
 
 def download_apk(request):
-    google_drive_link = "https://drive.google.com/file/d/1-U62DWNSnXLjk7NxQPcxNpm70d0T2AZ1/view?usp=sharing"
+    google_drive_link = "https://drive.google.com/file/d/1lP9SaGsdcsKmlTggKfNly0nw1Cb4MGJu/view?usp=drive_link"
     return redirect(google_drive_link)
