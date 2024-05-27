@@ -66,11 +66,11 @@ async def process_image(image):
             return {'gun': False, 'cigarette': True}
         
         result2 = await loop.run_in_executor(None, lambda:  modelgun.predict(image, classes=0, conf=0.60, augment=True))
-        if(result2['predictions'] != [] ):
-            for i in result2['predictions']:
-                if i['confidence'] > 0.50:
-                    return {'gun': True, 'cigarette': False}
-
+        boxes_gun = result2[0].boxes
+        if boxes_gun:
+            return {'gun': True, 'cigarette': False}
+        else:
+            return {'gun': False, 'cigarette': False}
        
         return {'gun': False, 'cigarette': False}
     except Exception as e:
