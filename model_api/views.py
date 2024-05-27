@@ -60,12 +60,12 @@ class PredictView(View):
 async def process_image(image):
     try:
         loop = asyncio.get_event_loop()
-        result1 = await loop.run_in_executor(None, lambda: modelcigarette.predict(image, classes=0, conf=0.50, augment=True))
+        result1 = await loop.run_in_executor(None, lambda: modelcigarette.predict(image, classes=0, conf=0.70, augment=True))
         boxes_cigarette = result1[0].boxes
         if boxes_cigarette:
             return {'gun': False, 'cigarette': True}
         
-        result2 = await loop.run_in_executor(None, lambda: modelgun.predict(image, classes=0, conf=0.50, augment=True))
+        result2 = await loop.run_in_executor(None, lambda: modelgun.predict(image, classes=0, conf=0.70, augment=True))
         boxes_gun = result2[0].boxes
 
         if boxes_gun and boxes_cigarette:
