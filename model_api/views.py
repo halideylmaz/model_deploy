@@ -71,8 +71,6 @@ async def process_image(image):
             return {'gun': True, 'cigarette': False}
         else:
             return {'gun': False, 'cigarette': False}
-       
-        return {'gun': False, 'cigarette': False}
     except Exception as e:
         return {'error': str(e)}
 
